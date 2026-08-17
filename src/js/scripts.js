@@ -37,6 +37,10 @@ import {
   setSelectedScriptLabels,
 } from './labels.js';
 
+import {
+  applyVariables
+} from './variables.js';
+
 let selectedLabel = 'all';
 
 function updateSelectedLabelItem() {
@@ -230,7 +234,7 @@ export async function copyScript(target) {
     const script = await getScript(id);
     if (!script) return;
 
-    await navigator.clipboard.writeText(script.content);
+    await navigator.clipboard.writeText(applyVariables(script.content));
 
     const message = `Copied to clipboard`;
     const toast = document.createElement('smb-toast');
