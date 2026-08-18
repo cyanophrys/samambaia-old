@@ -29,6 +29,7 @@ import {
 
 import {
   LIMITS,
+  PALETTE_COLORS,
   PSEUDO_LABELS,
 } from './config.js';
 
@@ -42,6 +43,12 @@ import {
 } from './variables.js';
 
 let selectedLabel = 'all';
+
+export function getScriptColor(color) {
+  return PALETTE_COLORS.includes(color)
+    ? color
+    : 'none';
+}
 
 function updateSelectedLabelItem() {
   const labelItems = document.querySelectorAll('.label-item');
@@ -98,7 +105,7 @@ export function createScriptElement(script) {
   const favoriteLabel = favoriteButton.querySelector('span');
   const editButton = item.querySelector('[data-action="editScript"]');
   const deleteButton = item.querySelector('[data-action="deleteScript"]');
-
+  const color = getScriptColor(script.color);
   const popoverId = `script-menu-${script.id}`;
   const anchorName = `--script-menu-${script.id}`;
 
@@ -117,6 +124,7 @@ export function createScriptElement(script) {
   content.dataset.target = script.id;
 
   content.textContent = script.content;
+  content.dataset.color = color;
 
   menu.id = popoverId;
   menu.style.positionAnchor = anchorName;
@@ -190,6 +198,7 @@ export async function editScript(element) {
   const dialog = document.getElementById('script-dialog');
   const form = dialog.querySelector('form');
   const saveButton = dialog.querySelector('button[type="submit"]');
+  const colorInput = form.elements['script-color'];
 
   setSelectedScriptLabels(script.labels);
 
@@ -197,6 +206,9 @@ export async function editScript(element) {
   form.elements['name'].value = script.name;
   form.elements['content'].value = script.content;
   form.elements['notes'].value = script.notes ?? '';
+
+  for (const input of colorInput)
+    input.checked = input.value === getScriptColor(script.color);
 
   dialog.title = 'Edit script';
   dialog.subtitle = script.name;
@@ -211,6 +223,7 @@ export async function saveScript() {
   const name = form.elements['name'].value.trim();
   const content = form.elements['content'].value;
   const notes = form.elements['notes'].value;
+  const color = getScriptColor(form.elements['script-color']?.value);
 
   if (
     !name ||
@@ -228,6 +241,7 @@ export async function saveScript() {
     labels: getSelectedScriptLabels(),
     content,
     notes,
+    color,
   };
 
   await saveScriptData(scriptData);
