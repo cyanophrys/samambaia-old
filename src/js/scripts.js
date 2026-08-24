@@ -211,6 +211,7 @@ export async function copyScript(target) {
 
 export function filterScripts() {
   const searchInput = document.getElementById('scripts-search-input');
+  const stack = document.getElementById('scripts-view-stack');
   const scriptItems = document.querySelectorAll('.script-item');
   const query = searchInput?.value.toLowerCase().trim() ?? '';
 
@@ -218,7 +219,21 @@ export function filterScripts() {
 
   scriptItems.forEach(script => {
     const isVisible = script.textContent.toLowerCase().includes(query);
+
     script.hidden = !isVisible;
-    if (isVisible) visibleScriptsCount++;
+
+    if (isVisible)
+      visibleScriptsCount++;
   });
+
+  if (stack) {
+    let page = 'scripts';
+
+    if (scriptItems.length === 0)
+      page = 'no-scripts';
+    else if (visibleScriptsCount === 0)
+      page = 'no-search-results';
+
+    stack.show(page);
+  }
 }
