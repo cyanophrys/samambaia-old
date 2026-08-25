@@ -76,6 +76,13 @@ function updateClearRecentScriptsButton() {
   button.disabled = !state.recentScripts.length;
 }
 
+function updateScriptsCount(scriptCount) {
+  const scriptsCount = document.getElementById('scripts-count');
+
+  if (scriptsCount)
+    scriptsCount.textContent = scriptCount;
+}
+
 export function scrollScriptsView() {
   const element = document.getElementById('custom-scripts');
 
@@ -181,6 +188,8 @@ export async function renderScripts() {
   container.replaceChildren(...scripts.map(createScriptElement));
 
   updateClearRecentScriptsButton();
+  updateScriptsCount(scripts.length);
+
   filterScripts();
 }
 
