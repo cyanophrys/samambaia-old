@@ -158,6 +158,12 @@ export function scrollScriptsView() {
   });
 }
 
+export function searchScripts() {
+  const input = document.getElementById('scripts-search-input');
+
+  input?.focus();
+}
+
 export function createScriptElement(script) {
   const template = document.querySelector('#script-item-template');
   const item = template.content.firstElementChild.cloneNode(true);
@@ -569,6 +575,17 @@ export function filterScripts() {
   updateScriptMoveButtons();
 }
 
+export function focusScriptsSearch(reset = false) {
+  const input = document.getElementById('scripts-search-input');
+
+  if (!input) return;
+
+  if (reset)
+    input.value = '';
+
+  input.focus();
+}
+
 export function filterByLabel(target) {
   const label = String(
     typeof target === 'string'
@@ -580,10 +597,7 @@ export function filterByLabel(target) {
 
   selectedLabel = label;
 
-  if (searchInput) {
-    searchInput.value = '';
-    searchInput.focus();
-  }
+  focusScriptsSearch(true);
 
   if (element)
     element.scrollTo({
@@ -603,7 +617,7 @@ export function searchAllScripts() {
 
   filterScripts();
 
-  searchInput?.focus();
+  focusScriptsSearch();
 }
 
 export async function toggleFavoriteScript(target) {
