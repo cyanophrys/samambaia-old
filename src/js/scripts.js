@@ -65,12 +65,17 @@ const PSEUDO_LABELS = [
   'recent',
 ];
 
+let scriptsContainer;
 let selectedLabel = 'all';
 
 export function getScriptColor(color) {
   return PALETTE_COLORS.includes(color)
     ? color
     : 'none';
+}
+
+function getScriptsContainer() {
+  return scriptsContainer ??= document.getElementById('custom-scripts');
 }
 
 function getVisibleScripts() {
