@@ -79,7 +79,11 @@ function getScriptsContainer() {
 }
 
 function getVisibleScripts() {
-  return [...document.querySelectorAll('.script-item:not([hidden])')];
+  const container = getScriptsContainer();
+
+  return container
+    ? [...container.querySelectorAll('.script-item:not([hidden])')]
+    : [];
 }
 
 function updateSelectedLabelItem() {
@@ -133,7 +137,7 @@ function updateDragHandles() {
 }
 
 export function scrollScriptsView() {
-  const element = document.getElementById('custom-scripts');
+  const element = getScriptsContainer();
 
   if (!element) return;
 
@@ -245,7 +249,7 @@ export async function renderScripts() {
     (a.order ?? Infinity) - (b.order ?? Infinity) || a.id - b.id
   );
 
-  const container = document.getElementById('custom-scripts');
+  const container = getScriptsContainer();
   container.replaceChildren();
 
   for (let i = 0; i < scripts.length; i += RENDER_CHUNK_SIZE) {
@@ -509,7 +513,7 @@ export function highlightQuery(roots, query) {
 export function filterScripts() {
   const searchInput = document.getElementById('scripts-search-input');
   const stack = document.getElementById('scripts-view-stack');
-  const scriptItems = document.querySelectorAll('.script-item');
+  const scriptItems = getScriptsContainer().querySelectorAll('.script-item');
   const query = searchInput?.value.toLowerCase().trim() ?? '';
 
   updateSelectedLabelItem();
@@ -548,7 +552,7 @@ export function filterScripts() {
   updateDragHandles();
 
   if (query.length >= 2) {
-    const highlightTargets = document.querySelectorAll(
+    const highlightTargets = getScriptsContainer().querySelectorAll(
       '.script-item:not([hidden]) :is(h4, .content, .notes)'
     );
     highlightQuery(highlightTargets, query);
@@ -598,7 +602,7 @@ export function filterByLabel(target) {
       : target.dataset.target
   );
   const searchInput = document.getElementById('scripts-search-input');
-  const element = document.getElementById('custom-scripts');
+  const element = getScriptsContainer();
 
   selectedLabel = label;
 
@@ -656,7 +660,7 @@ export async function toggleFavoriteScript(target) {
 }
 
 export function initScriptsSortable() {
-  const container = document.getElementById('custom-scripts');
+  const container = getScriptsContainer();
   if (!container) return;
 
   const canDrag = () => selectedLabel !== 'recent';
