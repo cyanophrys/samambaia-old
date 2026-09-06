@@ -121,8 +121,7 @@ function updateScriptsCount(scriptCount) {
     scriptsCount.textContent = scriptCount;
 }
 
-export function updateScriptMoveButtons() {
-  const items = getVisibleScripts();
+export function updateScriptMoveButtons(items) {
   const isRecent = selectedLabel === 'recent';
 
   items.forEach((item, index) => {
@@ -137,11 +136,11 @@ export function updateScriptMoveButtons() {
   });
 }
 
-function updateDragHandles() {
+function updateDragHandles(items) {
   const isRecent = selectedLabel === 'recent';
   const dragHandles = '[data-drag-handle]';
 
-  getVisibleScripts().forEach(item => {
+  items.forEach(item => {
     item.querySelector(dragHandles)?.toggleAttribute('hidden', isRecent);
   });
 }
@@ -532,6 +531,7 @@ export function filterScripts() {
 
   let labelScriptsCount = 0;
   let visibleScriptsCount = 0;
+  const visibleItems = [];
 
   scriptItems.forEach(script => {
     script.style.order = recentOrder
@@ -553,11 +553,13 @@ export function filterScripts() {
 
     script.hidden = !isVisible;
 
-    if (isVisible)
+    if (isVisible) {
       visibleScriptsCount++;
+      visibleItems.push(script);
+    }
   });
 
-  updateDragHandles();
+  updateDragHandles(visibleItems);
 
   if (query.length >= 2) {
     const highlightTargets = getScriptsContainer().querySelectorAll(
@@ -589,7 +591,7 @@ export function filterScripts() {
     stack.show(page);
   }
 
-  updateScriptMoveButtons();
+  updateScriptMoveButtons(visibleItems);
 }
 
 export function focusScriptsSearch(reset = false) {
@@ -696,7 +698,7 @@ export async function moveScriptPrevious(target) {
   const wasOpen = menu?.matches(':popover-open');
 
   items[index - 1].before(item);
-  updateScriptMoveButtons();
+  updateScriptMoveButtons(items);
 
   if (wasOpen) {
     menu.showPopover();
@@ -724,7 +726,7 @@ export async function moveScriptNext(target) {
   const wasOpen = menu?.matches(':popover-open');
 
   items[index + 1].after(item);
-  updateScriptMoveButtons();
+  updateScriptMoveButtons(items);
 
   if (wasOpen) {
     menu.showPopover();
