@@ -7,7 +7,27 @@
   <script src="js/appearance.js"></script>
   <style>
     :not(:defined) {
-      visibility: hidden;
+      visibility: hidden !important;
+    }
+
+    body {
+      &[data-loading] {
+        #layout,
+        #layout * {
+          visibility: hidden !important;
+        }
+      }
+
+      &:not([data-loading]) #loading {
+        display: none;
+      }
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
     }
   </style>
   <link rel="stylesheet" href="css/reset.css">
@@ -15,8 +35,11 @@
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body data-loading>
   <div id="tooltip" popover="manual" role="tooltip"></div>
+  <div id="loading">
+    <div class="spinner"></div>
+  </div>
   <div id="layout">
     <aside id="sidebar" data-i18n-attr="aria-label:mainNavigation">
       <header class="header vertical">

@@ -232,6 +232,12 @@ async function init() {
   toggleScratchpadSidebar(userPreferences.sidebars.scratchpad);
   toggleVariablesSidebar(userPreferences.sidebars.variables);
 
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.removeAttribute('data-loading');
+    });
+  });
+
   if (pendingToast) {
     sessionStorage.removeItem('pendingToast');
 
