@@ -251,6 +251,10 @@ async function init() {
 
 function bindEvents() {
   const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+  const debouncedToggleBackupBanner = debounce(
+    () => toggleBackupBanner(state.hasChanges),
+    300
+  );
 
   prefersDarkMode.addEventListener('change', () => {
     if (userPreferences.theme === 'system') setTheme('system');
@@ -274,7 +278,7 @@ function bindEvents() {
   ['data:changed', 'backup:completed'].forEach((event) => {
     document.addEventListener(event, () => {
       state.hasChanges = event === 'data:changed';
-      toggleBackupBanner(state.hasChanges);
+      debouncedToggleBackupBanner();
     });
   });
 
@@ -287,7 +291,6 @@ function bindEvents() {
     saveScriptsOrder();
   });
 }
-
 function openSettingsDialog(page = 'appearance') {
   const dialog = document.getElementById('settings-dialog');
   const stack = dialog.querySelector('smb-stack');
