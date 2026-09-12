@@ -121,7 +121,7 @@ function updateScriptsCount(scriptCount) {
     scriptsCount.textContent = scriptCount;
 }
 
-export function updateScriptMoveButtons(items) {
+export function updateScriptMoveButtons(items = getVisibleScripts()) {
   const isRecent = selectedLabel === 'recent';
 
   items.forEach((item, index) => {
