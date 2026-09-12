@@ -226,6 +226,7 @@ function handleAction(event, actions) {
 async function init() {
   const pendingToast = sessionStorage.getItem('pendingToast');
   const manifest = getManifestInfo();
+  const searchInput = document.getElementById('scripts-search-input');
 
   document.title = manifest.name;
   document.documentElement.lang = chrome.i18n.getUILanguage();
@@ -258,6 +259,7 @@ async function init() {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       document.body.removeAttribute('data-loading');
+      searchInput?.focus();
     });
   });
 
