@@ -25,6 +25,7 @@ import {
 
 import {
   PALETTE_COLORS,
+  TOKEN_CHARS_PATTERN,
 } from './config.js';
 
 import {
@@ -57,6 +58,7 @@ const MAX_RECENT_SCRIPTS = 30;
 const MAX_SCRIPT_NAME_LENGTH = 128;
 const MAX_SCRIPT_CONTENT_LENGTH = 5000;
 const MAX_SCRIPT_NOTES_LENGTH = 1000;
+const MAX_SCRIPT_ABBREVIATION_LENGTH = 32;
 const RENDER_CHUNK_SIZE = 250;
 
 const PSEUDO_LABELS = [
@@ -142,6 +144,19 @@ function updateDragHandles(items) {
 
   items.forEach(item => {
     item.querySelector(dragHandles)?.toggleAttribute('data-disabled', isRecent);
+  });
+}
+
+function updateTextExpansionAbbreviations(scripts) {
+  const textExpansionAbbreviations = {};
+
+  for (const script of scripts) {
+    if (!script.abbreviation) continue;
+    textExpansionAbbreviations[script.abbreviation.toLowerCase()] = script.content;
+  }
+
+  chrome.storage.local.set({ textExpansionAbbreviations }).catch((error) => {
+    console.error(error);
   });
 }
 
@@ -256,6 +271,8 @@ export async function renderScripts() {
     (a.order ?? Infinity) - (b.order ?? Infinity) || a.id - b.id
   );
 
+  updateTextExpansionAbbreviations(scripts);
+
   const container = getScriptsContainer();
   container.replaceChildren();
 
@@ -319,6 +336,7 @@ export async function editScript(element) {
   form.elements['name'].value = script.name;
   form.elements['content'].value = script.content;
   form.elements['notes'].value = script.notes ?? '';
+  form.elements['abbreviation'].value = script.abbreviation ?? '';
 
   for (const input of colorInput)
     input.checked = input.value === getScriptColor(script.color);
@@ -338,6 +356,8 @@ export async function saveScript() {
   const content = form.elements['content'].value;
   const notes = form.elements['notes'].value;
   const color = getScriptColor(form.elements['script-color']?.value);
+  const rawAbbreviation = form.elements['abbreviation'].value.trim();
+  const abbreviation = rawAbbreviation.replace(TOKEN_CHARS_PATTERN, '');
 
   if (
     !name ||
@@ -349,7 +369,32 @@ export async function saveScript() {
     return;
   }
 
-  const script = id ? await getScript(Number(id)) : null;
+  if (rawAbbreviation !== abbreviation || abbreviation.length > MAX_SCRIPT_ABBREVIATION_LENGTH) {
+    const toast = document.createElement('smb-toast');
+
+    toast.message = t('scriptAbbreviationInvalid');
+    toast.show('script-dialog-toast');
+    return;
+  }
+
+  const scripts = await getAllScripts();
+
+  if (abbreviation) {
+    const isDuplicate = scripts.some(existing =>
+      existing.abbreviation?.toLowerCase() === abbreviation.toLowerCase() &&
+      existing.id !== Number(id)
+    );
+
+    if (isDuplicate) {
+      const toast = document.createElement('smb-toast');
+
+      toast.message = t('scriptAbbreviationDuplicate');
+      toast.show('script-dialog-toast');
+      return;
+    }
+  }
+
+  const script = id ? scripts.find(existing => existing.id === Number(id)) : null;
   const order = script?.order;
 
   const scriptData = {
@@ -358,6 +403,7 @@ export async function saveScript() {
     labels: getSelectedScriptLabels(),
     content,
     notes,
+    abbreviation,
     color,
     order,
   };
