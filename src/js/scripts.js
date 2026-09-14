@@ -201,6 +201,7 @@ export function createScriptElement(script) {
   item.dataset.favorite = script.favorite ? 'true' : 'false';
 
   const title = item.querySelector('h4');
+  const abbreviation = item.querySelector('.abbreviation');
   const moreButton = item.querySelector('[aria-haspopup]');
   const copyButton = item.querySelector('[data-action="copyScript"]');
   const content = item.querySelector('.content');
@@ -216,6 +217,13 @@ export function createScriptElement(script) {
 
   title.id = `script-title-${script.id}`;
   title.textContent = script.name;
+
+  if (script.abbreviation) {
+    abbreviation.hidden = false;
+    abbreviation.textContent = `/${script.abbreviation}`;
+  } else {
+    abbreviation.remove();
+  }
 
   content.id = `script-content-${script.id}`;
 
