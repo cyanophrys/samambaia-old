@@ -220,7 +220,7 @@ export function createScriptElement(script) {
 
   if (script.abbreviation) {
     abbreviation.hidden = false;
-    abbreviation.textContent = `/${script.abbreviation}`;
+    abbreviation.textContent = `${userPreferences.textExpansionPrefix}${script.abbreviation}`;
   } else {
     abbreviation.remove();
   }
