@@ -115,10 +115,10 @@
   "scriptAddedToFavorites": { "message": "Script \"$1\" added to favorites" },
   "scriptColor": { "message": "Script color" },
   "scriptContent": { "message": "Content" },
-  "scriptNotes": { "message": "Notes" },
   "scriptDeleted": { "message": "Script \"$1\" deleted" },
   "scriptEdited": { "message": "Script \"$1\" edited" },
   "scriptMenuOptions": { "message": "Options for $1" },
+  "scriptNotes": { "message": "Notes (optional)" },
   "scriptRemovedFromFavorites": { "message": "Script \"$1\" removed from favorites" },
 
   "addLabel": { "message": "Add label" },
