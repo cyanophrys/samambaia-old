@@ -20,14 +20,23 @@
   const LOOKBEHIND_CHARS = 64;
 
   let abbreviations = {};
+  let textExpansion = true;
 
-  chrome.storage.local.get('textExpansionAbbreviations', (result) => {
+  chrome.storage.local.get(['textExpansionAbbreviations', 'userPreferences'], (result) => {
     abbreviations = result.textExpansionAbbreviations ?? {};
+    textExpansion = result.userPreferences?.textExpansion ?? true;
   });
 
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'local' || !changes.textExpansionAbbreviations) return;
-    abbreviations = changes.textExpansionAbbreviations.newValue ?? {};
+    if (area !== 'local') return;
+
+    if (changes.textExpansionAbbreviations) {
+      abbreviations = changes.textExpansionAbbreviations.newValue ?? {};
+    }
+
+    if (changes.userPreferences) {
+      textExpansion = changes.userPreferences.newValue?.textExpansion ?? true;
+    }
   });
 
   function isNativeField(element) {
@@ -77,7 +86,7 @@
   document.addEventListener(
     'input',
     (event) => {
-      if (!Object.keys(abbreviations).length) return;
+      if (!textExpansion || !Object.keys(abbreviations).length) return;
 
       const field = event.target;
       if (!isEditableField(field)) return;
