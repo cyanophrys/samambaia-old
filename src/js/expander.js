@@ -153,6 +153,13 @@
         return;
       }
 
+      const textBeforeCaret = getTextBeforeCaret(field, isNative);
+
+      if (textBeforeCaret.slice(-prefixLength) !== `${prefix}${abbreviation}`) {
+        pendingAbbreviation = null;
+        return;
+      }
+
       const replacement = abbreviations[abbreviation];
       if (replacement === undefined) {
         pendingAbbreviation = null;
