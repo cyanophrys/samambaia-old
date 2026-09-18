@@ -152,3 +152,7 @@ svg {
   padding-bottom: var(--spacing-md);
   pointer-events: none;
 }
+
+.clamp {
+  width: min(100%, var(--clamp-width));
+}
