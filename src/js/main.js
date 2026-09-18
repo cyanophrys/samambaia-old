@@ -235,39 +235,51 @@ function handleAction(event, actions) {
 
 async function init() {
   const pendingToast = sessionStorage.getItem('pendingToast');
-  const manifest = getManifestInfo();
+  const loadingStack = document.getElementById('loading-stack');
+  const loadingPlaceholder = document.getElementById('loading-placeholder');
   const searchInput = document.getElementById('scripts-search-input');
 
-  document.title = manifest.name;
-  document.documentElement.lang = getLocale();
+  try {
+    const manifest = getManifestInfo();
 
-  applyTranslations();
+    document.title = manifest.name;
+    document.documentElement.lang = getLocale();
 
-  await initDB();
-  await renderScripts();
-  await renderLabels();
-  await renderVariables();
-  await initScratchpad();
-  initScriptsSortable();
+    applyTranslations();
 
-  applyShortcutDisplays();
-  applyAriaKeyshortcuts();
+    await initDB();
+    await renderScripts();
+    await renderLabels();
+    await renderVariables();
+    await initScratchpad();
+    initScriptsSortable();
 
-  setAccentColor(userPreferences.accentColor);
-  setBackupReminder(userPreferences.backupReminder);
-  setHighContrast(userPreferences.highContrast);
-  setLargeText(userPreferences.largeText);
-  setRecentScripts(userPreferences.recentScripts);
-  setTextExpansion(userPreferences.textExpansion);
-  setTextExpansionPrefix(userPreferences.textExpansionPrefix);
-  setTextExpansionTrigger(userPreferences.textExpansionTrigger);
-  setTheme(userPreferences.theme);
-  setViewMode(userPreferences.viewMode);
+    applyShortcutDisplays();
+    applyAriaKeyshortcuts();
 
-  toggleBackupBanner(state.hasChanges);
-  toggleLabelsSidebar(userPreferences.sidebars.labels);
-  toggleScratchpadSidebar(userPreferences.sidebars.scratchpad);
-  toggleVariablesSidebar(userPreferences.sidebars.variables);
+    setAccentColor(userPreferences.accentColor);
+    setBackupReminder(userPreferences.backupReminder);
+    setHighContrast(userPreferences.highContrast);
+    setLargeText(userPreferences.largeText);
+    setRecentScripts(userPreferences.recentScripts);
+    setTextExpansion(userPreferences.textExpansion);
+    setTextExpansionPrefix(userPreferences.textExpansionPrefix);
+    setTextExpansionTrigger(userPreferences.textExpansionTrigger);
+    setTheme(userPreferences.theme);
+    setViewMode(userPreferences.viewMode);
+
+    toggleBackupBanner(state.hasChanges);
+    toggleLabelsSidebar(userPreferences.sidebars.labels);
+    toggleScratchpadSidebar(userPreferences.sidebars.scratchpad);
+    toggleVariablesSidebar(userPreferences.sidebars.variables);
+  } catch (error) {
+    console.error(error);
+
+    loadingPlaceholder.description = error.message;
+    loadingStack.show('error');
+
+    return;
+  }
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
