@@ -79,6 +79,7 @@ import {
   searchAllScripts,
   toggleFavoriteScript,
   updateScriptMoveButtons,
+  updateTextExpansionAbbreviations,
 } from './scripts.js';
 
 import {
@@ -331,6 +332,10 @@ function bindEvents() {
   bindDialogEvents();
 
   document.addEventListener('recentScripts:changed', filterScripts);
+  document.addEventListener(
+    'variable:changed',
+    () => updateTextExpansionAbbreviations()
+  );
 
   ['label:changed', 'textExpansionPrefix:changed'].forEach((event) => {
     document.addEventListener(event, renderScripts);

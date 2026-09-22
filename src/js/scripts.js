@@ -34,7 +34,8 @@ import {
 } from './labels.js';
 
 import {
-  applyVariables
+  applyVariables,
+  getVariableValuesMap,
 } from './variables.js';
 
 import {
@@ -147,12 +148,15 @@ function updateDragHandles(items) {
   });
 }
 
-function updateTextExpansionAbbreviations(scripts) {
+export async function updateTextExpansionAbbreviations(scripts) {
+  const list = scripts ?? await getAllScripts();
+  const values = getVariableValuesMap();
   const textExpansionAbbreviations = {};
 
-  for (const script of scripts) {
+  for (const script of list) {
     if (!script.abbreviation) continue;
-    textExpansionAbbreviations[script.abbreviation.toLowerCase()] = script.content;
+    textExpansionAbbreviations[script.abbreviation.toLowerCase()] =
+      applyVariables(script.content, values);
   }
 
   chrome.storage.local.set({ textExpansionAbbreviations }).catch((error) => {
