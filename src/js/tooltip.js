@@ -21,6 +21,7 @@ import {
 
 const tooltip = document.getElementById('tooltip');
 const SHOW_DELAY = 500;
+const TOOLTIP_TARGET_SELECTOR = '[data-tooltip]:not(:disabled)';
 
 let showTimer = 0;
 let anchorId = 0;
@@ -30,8 +31,14 @@ const anchorNames = new WeakMap();
 
 function findTooltipTarget(event) {
   return event.composedPath().find(
-    (el) => el instanceof Element && el.matches('[data-tooltip]:not(:disabled)')
+    (el) => el instanceof Element && el.matches(TOOLTIP_TARGET_SELECTOR)
   );
+}
+
+function closestTooltipTarget(node) {
+  return node instanceof Element
+    ? node.closest(TOOLTIP_TARGET_SELECTOR)
+    : null;
 }
 
 function getAnchor(element) {
@@ -106,7 +113,7 @@ export function bindTooltipEvents() {
     const element = findTooltipTarget(event);
     if (!element) return;
 
-    if (element.contains(event.relatedTarget)) return;
+    if (closestTooltipTarget(event.relatedTarget) === element) return;
 
     show(element);
   });
@@ -115,7 +122,7 @@ export function bindTooltipEvents() {
     const element = findTooltipTarget(event);
     if (!element) return;
 
-    if (element.contains(event.relatedTarget)) return;
+    if (closestTooltipTarget(event.relatedTarget) === element) return;
 
     hide();
   });
