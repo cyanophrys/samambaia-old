@@ -12,6 +12,11 @@
 
     body {
       &[data-loading] {
+        &,
+        & * {
+          transition: none !important;
+        }
+
         #layout,
         #layout * {
           visibility: hidden !important;
