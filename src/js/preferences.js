@@ -242,6 +242,13 @@ export function setTextExpansion(value, event) {
 
   userPreferences.textExpansion.enabled = isEnabled;
   updatePreferenceControl('text-expansion', isEnabled);
+
+  if (event && isEnabled) {
+    const toast = document.createElement('smb-toast');
+
+    toast.message = t('textExpansionReloadHint');
+    toast.show('preferences-dialog-toast');
+  }
 }
 
 export function setTextExpansionPrefix(value) {

@@ -235,6 +235,7 @@
   "textExpansionPrefixDescription": { "message": "Choose the character used as the prefix" },
   "textExpansionPrefixSemicolon": { "message": "Semicolon (;)" },
   "textExpansionPrefixSlash": { "message": "Slash (/)" },
+  "textExpansionReloadHint": { "message": "Reload open tabs to enable text expansion" },
   "textExpansionTrigger": { "message": "Text expansion trigger" },
   "textExpansionTriggerDescription": { "message": "Choose the key used to trigger text expansion" },
   "textExpansionTriggerEnter": { "message": "Enter" },
