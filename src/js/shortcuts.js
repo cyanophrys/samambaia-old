@@ -203,7 +203,7 @@ export function handleShortcut(event, actions, shortcuts) {
   ].filter(Boolean).join("+");
 
   const elements = document.querySelectorAll(
-    `[data-keyboard-shortcut="${shortcutString}"]`
+    `[data-keyboard-shortcut="${shortcutString}"], [data-action="${shortcut?.action}"][data-keyboard-shortcut-scope="dialog"]`
   );
 
   const element = [...elements].find((element) => {
@@ -215,6 +215,12 @@ export function handleShortcut(event, actions, shortcuts) {
       const popover = element.closest('[popover]');
 
       return popover?.matches(':popover-open');
+    }
+
+    if (scope === 'dialog') {
+      const dialog = element.closest('smb-dialog');
+
+      return dialog?.open;
     }
 
     return false;
@@ -229,7 +235,10 @@ export function handleShortcut(event, actions, shortcuts) {
       element instanceof HTMLSelectElement
     ) {
       element.focus();
-    } else if (element.dataset.keyboardShortcutScope === 'menu') {
+    } else if (
+      element.dataset.keyboardShortcutScope === 'menu' ||
+      element.dataset.keyboardShortcutScope === 'dialog'
+    ) {
       element.click();
       element.focus();
     } else if (
@@ -246,6 +255,11 @@ export function handleShortcut(event, actions, shortcuts) {
   }
 
   if (!shortcut) return;
+
+  const dialogOpen = [...document.querySelectorAll('smb-dialog')]
+    .some((dialog) => dialog.open);
+
+  if (dialogOpen) return;
 
   const handler = actions.click?.[shortcut.action];
   if (!handler) return;
