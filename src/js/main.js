@@ -270,9 +270,9 @@ async function init() {
     setHighContrast(userPreferences.highContrast);
     setLargeText(userPreferences.largeText);
     setRecentScripts(userPreferences.recentScripts);
-    setTextExpansion(userPreferences.textExpansion);
-    setTextExpansionPrefix(userPreferences.textExpansionPrefix);
-    setTextExpansionTrigger(userPreferences.textExpansionTrigger);
+    setTextExpansion(userPreferences.textExpansion.enabled);
+    setTextExpansionPrefix(userPreferences.textExpansion.prefix);
+    setTextExpansionTrigger(userPreferences.textExpansion.trigger);
     setTheme(userPreferences.theme);
     setViewMode(userPreferences.viewMode);
 

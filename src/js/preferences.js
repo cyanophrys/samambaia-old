@@ -54,9 +54,11 @@ const DEFAULT_PREFERENCES = {
     scratchpad: false,
     variables: true,
   },
-  textExpansion: true,
-  textExpansionPrefix: TEXT_EXPANSION_PREFIXES.default,
-  textExpansionTrigger: TEXT_EXPANSION_TRIGGERS.default,
+  textExpansion: {
+    enabled: true,
+    prefix: TEXT_EXPANSION_PREFIXES.default,
+    trigger: TEXT_EXPANSION_TRIGGERS.default,
+  },
   theme: 'system',
   viewMode: 'grid',
 };
@@ -236,9 +238,9 @@ export function setRecentScripts(value, event) {
 export function setTextExpansion(value, event) {
   const isEnabled =
     (typeof value === 'boolean' ? value : event?.target?.checked)
-    ?? DEFAULT_PREFERENCES.textExpansion;
+    ?? DEFAULT_PREFERENCES.textExpansion.enabled;
 
-  userPreferences.textExpansion = isEnabled;
+  userPreferences.textExpansion.enabled = isEnabled;
   updatePreferenceControl('text-expansion', isEnabled);
 }
 
@@ -247,7 +249,7 @@ export function setTextExpansionPrefix(value) {
     ? value
     : TEXT_EXPANSION_PREFIXES.default;
 
-  userPreferences.textExpansionPrefix = prefix;
+  userPreferences.textExpansion.prefix = prefix;
   updatePreferenceControl('text-expansion-prefix', prefix);
 
   document.dispatchEvent(new Event('textExpansionPrefix:changed'));
@@ -258,6 +260,6 @@ export function setTextExpansionTrigger(value) {
     ? value
     : TEXT_EXPANSION_TRIGGERS.default;
 
-  userPreferences.textExpansionTrigger = trigger;
+  userPreferences.textExpansion.trigger = trigger;
   updatePreferenceControl('text-expansion-trigger', trigger);
 }

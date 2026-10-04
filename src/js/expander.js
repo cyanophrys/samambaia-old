@@ -39,9 +39,9 @@
   chrome.storage.local.get(['textExpansionAbbreviations', 'userPreferences'], (result) => {
     abbreviations = result.textExpansionAbbreviations ?? {};
     abbreviationsCount = Object.keys(abbreviations).length;
-    textExpansion = result.userPreferences?.textExpansion ?? true;
-    prefix = result.userPreferences?.textExpansionPrefix ?? '';
-    trigger = result.userPreferences?.textExpansionTrigger ?? '';
+    textExpansion = result.userPreferences?.textExpansion?.enabled ?? true;
+    prefix = result.userPreferences?.textExpansion?.prefix ?? '';
+    trigger = result.userPreferences?.textExpansion?.trigger ?? '';
     updatePrefixPattern();
   });
 
@@ -54,9 +54,9 @@
     }
 
     if (changes.userPreferences) {
-      textExpansion = changes.userPreferences.newValue?.textExpansion ?? true;
-      prefix = changes.userPreferences.newValue?.textExpansionPrefix ?? '';
-      trigger = changes.userPreferences.newValue?.textExpansionTrigger ?? '';
+      textExpansion = changes.userPreferences.newValue?.textExpansion?.enabled ?? true;
+      prefix = changes.userPreferences.newValue?.textExpansion?.prefix ?? '';
+      trigger = changes.userPreferences.newValue?.textExpansion?.trigger ?? '';
       updatePrefixPattern();
     }
   });

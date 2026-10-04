@@ -232,7 +232,7 @@ export function createScriptElement(script) {
 
   if (script.abbreviation) {
     abbreviation.hidden = false;
-    abbreviation.textContent = `${userPreferences.textExpansionPrefix}${script.abbreviation}`;
+    abbreviation.textContent = `${userPreferences.textExpansion.prefix}${script.abbreviation}`;
   } else {
     abbreviation.remove();
   }
