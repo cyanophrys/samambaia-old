@@ -67,7 +67,6 @@
   "moveToNext": { "message": "Move to next" },
   "moveToPrevious": { "message": "Move to previous" },
   "primaryControls": { "message": "Primary controls" },
-  "viewMore": { "message": "View more" },
 
   "search": {
     "message": "Search",
