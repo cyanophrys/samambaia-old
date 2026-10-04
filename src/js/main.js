@@ -30,10 +30,6 @@ import {
 } from './utils.js';
 
 import {
-  wipeStoredData,
-} from './store.js';
-
-import {
   state,
 } from './state.js';
 
@@ -57,7 +53,6 @@ import {
 
 import {
   initDB,
-  wipeDB,
 } from './db.js';
 
 import {
@@ -151,8 +146,11 @@ import {
 import {
   applyTranslations,
   getLocale,
-  t,
 } from './i18n.js';
+
+import {
+  wipeData,
+} from './wipe.js';
 
 const actions = {
   change: {
@@ -364,61 +362,6 @@ function bindEvents() {
     updateScriptMoveButtons();
     saveScriptsOrder();
   });
-}
-
-async function wipeData() {
-  const dialog = document.createElement('smb-alert-dialog');
-
-  dialog.heading = t('deleteAllDataHeading');
-  dialog.body = t('deleteAllDataBody');
-
-  const confirmation = document
-    .getElementById('wipe-confirmation-template')
-    .content.firstElementChild.cloneNode(true);
-  const confirmationLabel = confirmation.querySelector('span');
-
-  confirmationLabel.textContent = t('wipeConfirmationLabel');
-  dialog.append(confirmation);
-
-  dialog.addResponses([
-    { id: 'cancel', label: t('cancel'), appearance: 'default' },
-    { id: 'wipe', label: t('deleteData'), appearance: 'destructive' }
-  ]);
-
-  dialog.setResponseEnabled('wipe', false);
-
-  const checkbox = confirmation.querySelector('input');
-
-  checkbox.addEventListener('change', () => {
-    dialog.setResponseEnabled('wipe', checkbox.checked);
-  });
-
-  dialog.addEventListener('response', async (e) => {
-    if (e.detail.response !== 'wipe') return;
-
-    try {
-      const { mainTabId } = await chrome.storage.local.get('mainTabId');
-
-      await wipeStoredData(mainTabId !== undefined ? { mainTabId } : {});
-      await wipeDB();
-
-      state.hasChanges = false;
-
-      sessionStorage.setItem('pendingToast', t('dataDeleted'));
-
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-
-      const toast = document.createElement('smb-toast');
-
-      toast.type = 'error';
-      toast.message = t('errorDeletingData');
-      toast.show('main-toast');
-    }
-  }, { once: true });
-
-  dialog.showModal();
 }
 
 bindEvents();
