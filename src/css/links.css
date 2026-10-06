@@ -1,4 +1,4 @@
-a {
+a:not(.button-row) {
   color: oklch(from var(--accent-color) calc(l - 0.1) c h);
   text-decoration: none;
   transition: color var(--transition-medium);
