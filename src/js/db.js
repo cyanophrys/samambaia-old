@@ -28,6 +28,12 @@ function notifyDataChanged() {
   document.dispatchEvent(new CustomEvent('data:changed'));
 }
 
+function getDB() {
+  if (!db) throw new Error('Database is not initialized.');
+
+  return db;
+}
+
 export function initDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -105,7 +111,7 @@ export async function hasStoredData() {
 
 export function restoreBackupFromFile({ labels = [], scripts = [], variables = [], scratchpad = "" }) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(
+    const transaction = getDB().transaction(
       [LABELS_STORE, SCRIPTS_STORE, VARIABLES_STORE, SCRATCHPAD_STORE],
       "readwrite"
     );
@@ -150,7 +156,7 @@ export function restoreBackupFromFile({ labels = [], scripts = [], variables = [
 
 export function getAllScripts() {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRIPTS_STORE, 'readonly');
+    const transaction = getDB().transaction(SCRIPTS_STORE, 'readonly');
     const store = transaction.objectStore(SCRIPTS_STORE);
     const request = store.getAll();
 
@@ -161,7 +167,7 @@ export function getAllScripts() {
 
 export function getScript(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRIPTS_STORE, 'readonly');
+    const transaction = getDB().transaction(SCRIPTS_STORE, 'readonly');
     const store = transaction.objectStore(SCRIPTS_STORE);
     const request = store.get(id);
 
@@ -172,7 +178,7 @@ export function getScript(id) {
 
 export function saveScriptData(script) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRIPTS_STORE, 'readwrite');
+    const transaction = getDB().transaction(SCRIPTS_STORE, 'readwrite');
     const store = transaction.objectStore(SCRIPTS_STORE);
 
     const data = {
@@ -199,7 +205,7 @@ export function saveScriptData(script) {
 
 export function saveScriptsOrderData(orderedIds) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRIPTS_STORE, 'readwrite');
+    const transaction = getDB().transaction(SCRIPTS_STORE, 'readwrite');
     const store = transaction.objectStore(SCRIPTS_STORE);
 
     transaction.oncomplete = () => {
@@ -222,7 +228,7 @@ export function saveScriptsOrderData(orderedIds) {
 
 export function deleteScriptData(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRIPTS_STORE, 'readwrite');
+    const transaction = getDB().transaction(SCRIPTS_STORE, 'readwrite');
     const store = transaction.objectStore(SCRIPTS_STORE);
     const request = store.delete(id);
 
@@ -236,7 +242,7 @@ export function deleteScriptData(id) {
 
 export function getAllLabels() {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(LABELS_STORE, 'readonly');
+    const transaction = getDB().transaction(LABELS_STORE, 'readonly');
     const store = transaction.objectStore(LABELS_STORE);
     const request = store.getAll();
 
@@ -247,7 +253,7 @@ export function getAllLabels() {
 
 export function getLabel(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(LABELS_STORE, 'readonly');
+    const transaction = getDB().transaction(LABELS_STORE, 'readonly');
     const store = transaction.objectStore(LABELS_STORE);
     const request = store.get(id);
 
@@ -258,7 +264,7 @@ export function getLabel(id) {
 
 export function saveLabelData(label) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(LABELS_STORE, 'readwrite');
+    const transaction = getDB().transaction(LABELS_STORE, 'readwrite');
     const store = transaction.objectStore(LABELS_STORE);
 
     const data = { ...label };
@@ -283,7 +289,7 @@ export function saveLabelData(label) {
 
 export function deleteLabelData(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(LABELS_STORE, 'readwrite');
+    const transaction = getDB().transaction(LABELS_STORE, 'readwrite');
     const store = transaction.objectStore(LABELS_STORE);
     const request = store.delete(id);
 
@@ -297,7 +303,7 @@ export function deleteLabelData(id) {
 
 export function getAllVariables() {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(VARIABLES_STORE, 'readonly');
+    const transaction = getDB().transaction(VARIABLES_STORE, 'readonly');
     const store = transaction.objectStore(VARIABLES_STORE);
     const request = store.getAll();
 
@@ -308,7 +314,7 @@ export function getAllVariables() {
 
 export function getVariable(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(VARIABLES_STORE, 'readonly');
+    const transaction = getDB().transaction(VARIABLES_STORE, 'readonly');
     const store = transaction.objectStore(VARIABLES_STORE);
     const request = store.get(id);
 
@@ -319,7 +325,7 @@ export function getVariable(id) {
 
 export function saveVariableData(variable, notify = true) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(VARIABLES_STORE, 'readwrite');
+    const transaction = getDB().transaction(VARIABLES_STORE, 'readwrite');
     const store = transaction.objectStore(VARIABLES_STORE);
 
     const data = { ...variable };
@@ -344,7 +350,7 @@ export function saveVariableData(variable, notify = true) {
 
 export function deleteVariableData(id) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(VARIABLES_STORE, 'readwrite');
+    const transaction = getDB().transaction(VARIABLES_STORE, 'readwrite');
     const store = transaction.objectStore(VARIABLES_STORE);
     const request = store.delete(id);
 
@@ -358,7 +364,7 @@ export function deleteVariableData(id) {
 
 export function getScratchpadData() {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRATCHPAD_STORE, 'readonly');
+    const transaction = getDB().transaction(SCRATCHPAD_STORE, 'readonly');
     const store = transaction.objectStore(SCRATCHPAD_STORE);
     const request = store.get(1);
 
@@ -369,7 +375,7 @@ export function getScratchpadData() {
 
 export function saveScratchpadData(content) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRATCHPAD_STORE, 'readwrite');
+    const transaction = getDB().transaction(SCRATCHPAD_STORE, 'readwrite');
     const store = transaction.objectStore(SCRATCHPAD_STORE);
     const request = store.put({ id: 1, content });
 
@@ -380,7 +386,7 @@ export function saveScratchpadData(content) {
 
 export function clearScratchpadData() {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(SCRATCHPAD_STORE, 'readwrite');
+    const transaction = getDB().transaction(SCRATCHPAD_STORE, 'readwrite');
     const store = transaction.objectStore(SCRATCHPAD_STORE);
     const request = store.put({ id: 1, content: '' });
 
