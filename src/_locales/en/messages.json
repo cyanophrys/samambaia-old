@@ -283,6 +283,9 @@
   "font": { "message": "Font" },
   "icons": { "message": "Icons" },
   "license": { "message": "License" },
+  "reportAnIssue": {
+    "message": "Report an issue"
+  },
   "version": { "message": "Version" },
   "website": { "message": "Website" }
 }
