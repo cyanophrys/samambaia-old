@@ -32,7 +32,6 @@ export async function openAboutDialog() {
     placeholder.description = manifest.author;
     version.textContent = manifest.version;
     homepage_url.href = manifest.homepage_url;
-    homepage_url.textContent = manifest.homepage_url;
   } catch (error) {
     console.error(error);
   }
