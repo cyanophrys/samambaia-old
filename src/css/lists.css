@@ -31,6 +31,7 @@
   align-items: center;
   gap: var(--spacing-sm);
   min-height: 52px;
+  border: 0;
   padding: var(--spacing-xs) var(--row-pad-x);
   background-color: color-mix(in oklab, currentColor 8%, transparent);
   transition:
