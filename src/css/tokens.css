@@ -45,6 +45,11 @@
   --palette-yellow: oklch(from #e0bc63 l calc(c * var(--palette-hc-boost)) h);
 
   --background-color: light-dark(white, #27272a);
+  --badge-bg-color: color-mix(in oklab, var(--accent-color) 12%, transparent);
+  --badge-fg-color: light-dark(
+    oklch(from var(--accent-color) calc(l - 0.12) c h),
+    oklch(from var(--accent-color) calc(l + 0.25) c h)
+  );
   --border-color: light-dark(rgb(0 0 0 / 18%), rgb(255 255 255 / 18%));
   --border-hc-color: transparent;
   --dark-border-color: light-dark(rgb(0 0 0 / 30%), rgb(0 0 0 / 45%));
@@ -94,6 +99,8 @@
     --palette-hc-boost: 1.6;
 
     --background-color: light-dark(#fff, #222);
+    --badge-bg-color: color-mix(in oklab, currentColor 18%, transparent);
+    --badge-fg-color: var(--text-color);
     --border-color: var(--border-hc-color);
     --border-hc-color: color-mix(in oklab, currentColor 45%, transparent);
     --dark-border-color: var(--border-hc-color);

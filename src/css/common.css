@@ -99,3 +99,16 @@
 .clamp {
   width: min(100%, var(--clamp-width));
 }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--border-hc-color);
+  border-radius: var(--radius-max);
+  background-color: var(--badge-bg-color);
+  color: var(--badge-fg-color);
+  font-weight: 600;
+  line-height: 1.2;
+}
