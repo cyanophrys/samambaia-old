@@ -285,6 +285,7 @@
   "legalNotice": {
     "message": "Licensed under the GNU General Public License, version 3. This project comes without any warranty."
   },
+  "privacyPolicy": { "message": "Privacy policy" },
   "reportAnIssue": {
     "message": "Report an issue"
   },
