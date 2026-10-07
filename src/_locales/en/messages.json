@@ -282,7 +282,9 @@
   "credits": { "message": "Credits" },
   "font": { "message": "Font" },
   "icons": { "message": "Icons" },
-  "license": { "message": "License" },
+  "legalNotice": {
+    "message": "Licensed under the GNU General Public License, version 3. This project comes without any warranty."
+  },
   "reportAnIssue": {
     "message": "Report an issue"
   },
