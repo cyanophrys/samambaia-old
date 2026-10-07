@@ -15,6 +15,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {
+  debounce,
+} from './utils.js';
+
 const storage = chrome.storage;
 
 if (!storage?.local) {
@@ -64,7 +68,7 @@ export async function loadState(storageKey, defaultState) {
 export function createStore(initialState, options = {}, onUpdate) {
   const proxyCache = new WeakMap();
 
-  function saveState() {
+  const saveState = debounce(() => {
     if (!options.storageKey) return;
 
     storage.local
@@ -77,7 +81,7 @@ export function createStore(initialState, options = {}, onUpdate) {
           error
         );
       });
-  }
+  }, 100);
 
   function makeProxy(target, path = []) {
     if (!target || typeof target !== 'object') {
