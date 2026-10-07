@@ -254,9 +254,9 @@ async function init() {
     applyTranslations();
 
     await initDB();
-    await renderScripts();
     await renderLabels();
     await renderVariables();
+    await renderScripts();
     await initScratchpad();
     initScriptsSortable();
 
