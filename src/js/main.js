@@ -22,7 +22,6 @@ import '../components/smb-stack/smb-stack.js';
 import '../components/smb-toast/smb-toast.js';
 
 import {
-  clearField,
   debounce,
   getManifestInfo,
   handleAction,
@@ -151,7 +150,6 @@ const actions = {
     addLabel,
     addScript,
     addVariable,
-    clearField,
     clearRecentScripts,
     clearScratchpad,
     copyScratchpad,
