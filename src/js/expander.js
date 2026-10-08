@@ -25,6 +25,7 @@
   let trigger = '';
   let pendingAbbreviation = null;
   let prefixPattern = null;
+  let siteExcluded = false;
 
   function updatePrefixPattern() {
     if (!prefix) {
@@ -36,6 +37,37 @@
     prefixPattern = new RegExp(`(?:^|\\s)${escapedPrefix}([a-zA-Z0-9_-]{1,32})$`);
   }
 
+  function getTopHostname() {
+    const origins = location.ancestorOrigins;
+
+    if (!origins?.length) return location.hostname;
+
+    try {
+      return new URL(origins[origins.length - 1]).hostname;
+    } catch {
+      return '';
+    }
+  }
+
+  function updateSiteExcluded(excludedSites) {
+    const hostnames = [location.hostname, getTopHostname()]
+      .map(hostname => hostname.toLowerCase().replace(/\.$/, ''))
+      .filter(Boolean);
+
+    const sites = Array.isArray(excludedSites)
+      ? excludedSites
+        .filter(site => typeof site === 'string')
+        .map(site => site.trim().toLowerCase().replace(/^\*\./, '').replace(/\.$/, ''))
+        .filter(Boolean)
+      : [];
+
+    siteExcluded = sites.some(site =>
+      hostnames.some(hostname =>
+        hostname === site || hostname.endsWith(`.${site}`)
+      )
+    );
+  }
+
   chrome.storage.local.get(['textExpansionAbbreviations', 'userPreferences'], (result) => {
     abbreviations = result.textExpansionAbbreviations ?? {};
     abbreviationsCount = Object.keys(abbreviations).length;
@@ -43,6 +75,7 @@
     prefix = result.userPreferences?.textExpansion?.prefix ?? '';
     trigger = result.userPreferences?.textExpansion?.trigger ?? '';
     updatePrefixPattern();
+    updateSiteExcluded(result.userPreferences?.textExpansion?.excludedSites);
   });
 
   chrome.storage.onChanged.addListener((changes, area) => {
@@ -58,6 +91,7 @@
       prefix = changes.userPreferences.newValue?.textExpansion?.prefix ?? '';
       trigger = changes.userPreferences.newValue?.textExpansion?.trigger ?? '';
       updatePrefixPattern();
+      updateSiteExcluded(changes.userPreferences.newValue?.textExpansion?.excludedSites);
     }
   });
 
@@ -155,7 +189,7 @@
     (event) => {
       pendingAbbreviation = null;
 
-      if (!textExpansion || !prefixPattern || !abbreviationsCount) return;
+      if (!textExpansion || siteExcluded || !prefixPattern || !abbreviationsCount) return;
 
       const field = event.target;
       if (!isEditableField(field)) return;
