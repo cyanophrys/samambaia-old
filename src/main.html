@@ -490,6 +490,18 @@
               </label>
             </div>
           </section>
+          <section class="section">
+            <header class="header">
+              <h4 data-i18n="excludedSites"></h4>
+              <span data-i18n="excludedSitesDescription"></span>
+            </header>
+            <div id="excluded-sites" class="list-group">
+              <button class="list-row button-row activatable" type="button" data-action="addExcludedSite">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M450-450H220v-60h230v-230h60v230h230v60H510v230h-60v-230Z"/></svg>
+                <span data-i18n="addSiteEllipsis"></span>
+              </button>
+            </div>
+          </section>
         </div>
       </smb-stack-page>
       <smb-stack-page page-name="accessibility" page-title="accessibility">
@@ -558,6 +570,22 @@
       </smb-stack-page>
     </smb-stack>
     <smb-stack-switcher slot="footer-center" target="preferences-stack"></smb-stack-switcher>
+  </smb-dialog>
+  <smb-dialog id="excluded-site-dialog" data-i18n-attr="heading:addSite" style="anchor-name: --excluded-site-dialog-toast; --dialog-width: 420px;" action-dialog>
+    <div id="excluded-site-dialog-toast" class="toast-container" style="position-anchor: --excluded-site-dialog-toast;"></div>
+    <div class="scrollable-area">
+      <section>
+        <form id="excluded-site-form" class="list-group rows-separated" data-action="saveExcludedSite">
+          <div class="list-row field-row">
+            <input class="input" type="text" id="excluded-site" name="site" placeholder=" " autocomplete="off" required autofocus>
+            <label for="excluded-site" data-i18n="siteAddress"></label>
+          </div>
+          <input type="hidden" id="excluded-site-original" name="original">
+        </form>
+      </section>
+    </div>
+    <button slot="footer-left" class="button" type="button" data-i18n="cancel" data-dialog-close></button>
+    <button slot="footer-right" class="button suggested-action" type="submit" form="excluded-site-form" data-i18n="add"></button>
   </smb-dialog>
   <smb-dialog id="about-dialog" data-i18n-attr="heading:about" style="--dialog-width: 400px;">
     <div class="scrollable-area">
@@ -894,6 +922,24 @@
       <input type="checkbox" class="checkbox" name="wipe-confirmation">
       <span></span>
     </label>
+  </template>
+  <template id="excluded-site-template">
+    <div class="list-row" role="group" data-tooltip="truncated" data-tooltip-source=".title">
+      <span class="title"></span>
+      <button class="button flat suffix" type="button" data-i18n-attr="aria-label:moreOptions" aria-haspopup="menu" data-tooltip>
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-181.16q-24.25 0-41.32-17.06-17.06-17.07-17.06-41.32t17.06-41.32q17.07-17.06 41.32-17.06t41.32 17.06q17.06 17.07 17.06 41.32t-17.06 41.32q-17.07 17.06-41.32 17.06Zm0-240.46q-24.25 0-41.32-17.06-17.06-17.07-17.06-41.32t17.06-41.32q17.07-17.06 41.32-17.06t41.32 17.06q17.06 17.06 17.06 41.32t-17.06 41.32q-17.07 17.06-41.32 17.06Zm0-240.46q-24.25 0-41.32-17.06-17.06-17.06-17.06-41.32t17.06-41.32q17.07-17.06 41.32-17.06t41.32 17.06q17.06 17.07 17.06 41.32t-17.06 41.32q-17.07 17.06-41.32 17.06Z"/></svg>
+      </button>
+      <div class="menu" role="menu" popover>
+        <button class="menu-item" role="menuitem" popovertargetaction="hide" data-action="editExcludedSite">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M204.04-204.04h47.23L661.54-614 614-661.54 204.04-250.96v46.92Zm-55.96 55.96v-126.5L669.23-796q8.25-7.61 18.22-11.77 9.97-4.15 21.24-4.15 11.2 0 21.7 4.11 10.49 4.12 19.19 12.43L796-748.65q8.31 8.19 12.11 18.54 3.81 10.35 3.81 21.03 0 11.39-3.86 21.58-3.85 10.19-12.1 18.42l-521.38 521h-126.5Zm608.27-560.96-47.31-47.31 47.31 47.31Zm-118.87 71.56L614-661.54 661.54-614l-24.06-23.48Z"/></svg>
+          <span data-i18n="editEllipsis"></span>
+        </button>
+        <button class="menu-item" role="menuitem" popovertargetaction="hide" data-action="removeExcludedSite">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M577.92-93.85 535.77-136l104-104-104-104 42.15-42.15 104 104 104-104L828.08-344l-104 104 104 104-42.16 42.15-104-104-104 104ZM131.92-330v-60h280v60h-280Zm0-160v-60h440v60h-440Zm0-160v-60h440v60h-440Z"/></svg>
+          <span data-i18n="remove"></span>
+        </button>
+      </div>
+    </div>
   </template>
   <script type="module" src="js/main.js"></script>
   <script src="js/expander.js"></script>

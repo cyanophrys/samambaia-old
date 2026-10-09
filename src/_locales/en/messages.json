@@ -41,6 +41,10 @@
     "message": "Pin",
     "description": "Action used to pin an item to the top of a list"
   },
+  "remove": {
+    "message": "Remove",
+    "description": "Action used to remove an item"
+  },
   "select": {
     "message": "Select",
     "description": "Action used to select an item"
@@ -241,6 +245,19 @@
   "textExpansionTriggerEnter": { "message": "Enter" },
   "textExpansionTriggerSpace": { "message": "Space" },
   "textExpansionTriggerTab": { "message": "Tab" },
+
+  "addSite": { "message": "Add site" },
+  "addSiteEllipsis": { "message": "Add site…" },
+  "editSite": { "message": "Edit site" },
+  "excludedSites": { "message": "Excluded sites" },
+  "excludedSitesDescription": { "message": "Text expansion is turned off on these sites and their subdomains" },
+  "siteAdded": { "message": "Site \"$1\" added" },
+  "siteAddress": { "message": "Site address" },
+  "siteDuplicate": { "message": "This site is already excluded" },
+  "siteEdited": { "message": "Site \"$1\" updated" },
+  "siteInvalid": { "message": "Enter a valid site, like example.com" },
+  "siteMenuOptions": { "message": "Options for $1" },
+  "siteRemoved": { "message": "Site \"$1\" removed" },
 
   "clearHistory": { "message": "Clear history" },
   "clearRecentHistoryBody": {
