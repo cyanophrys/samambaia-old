@@ -56,6 +56,7 @@ const DEFAULT_PREFERENCES = {
   },
   textExpansion: {
     enabled: true,
+    excludedSites: [],
     prefix: TEXT_EXPANSION_PREFIXES.default,
     trigger: TEXT_EXPANSION_TRIGGERS.default,
   },

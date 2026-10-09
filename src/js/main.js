@@ -127,6 +127,14 @@ import {
 } from './shortcuts.js';
 
 import {
+  addExcludedSite,
+  editExcludedSite,
+  removeExcludedSite,
+  renderExcludedSites,
+  saveExcludedSite,
+} from './excluded-sites.js';
+
+import {
   getManifestInfo,
   openAboutDialog,
 } from './about.js';
@@ -167,6 +175,7 @@ const actions = {
   },
 
   click: {
+    addExcludedSite,
     addLabel,
     addScript,
     addVariable,
@@ -179,6 +188,7 @@ const actions = {
     deleteScript,
     deleteVariable,
     dismissBackupBanner,
+    editExcludedSite,
     editLabel,
     editScript,
     editVariable,
@@ -191,6 +201,7 @@ const actions = {
     openAboutDialog,
     openPreferencesDialog: (target) => openPreferencesDialog(target?.dataset?.page),
     openShortcutsDialog,
+    removeExcludedSite,
     restoreBackup,
     reload: () => window.location.reload(),
     scrollScriptsView,
@@ -215,6 +226,7 @@ const actions = {
   },
 
   submit: {
+    saveExcludedSite,
     saveLabel,
     saveLabelsSelection,
     saveScript,
@@ -334,6 +346,8 @@ function bindEvents() {
   bindDialogEvents();
 
   document.addEventListener('recentScripts:changed', filterScripts);
+  document.addEventListener('preferencesDialog:opened', renderExcludedSites);
+
   document.addEventListener(
     'variable:changed',
     () => updateTextExpansionAbbreviations()
