@@ -76,6 +76,8 @@ export function openPreferencesDialog(page = 'appearance') {
 
   stack.show(page);
   dialog.showModal();
+
+  document.dispatchEvent(new Event('preferencesDialog:opened'));
 }
 
 export function updatePreferenceControl(name, value) {
